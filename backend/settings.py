@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
 import environ
 import os
 
@@ -29,7 +30,10 @@ SECRET_KEY = 'django-insecure-em^-5)%3u-(it0tzo#pl^%evlp1o5orcd5rrai@$vap-p&kca&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1'
+]
 
 
 # Application definition
@@ -43,15 +47,17 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'main_app',
     'rest_framework',
+    'rest_framework_simplejwt.token_blacklist',
     'corsheaders'
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    'http://localhost'
+    'http://localhost/',
+    'http://127.0.0.1/'
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',  # Add this line
+    'corsheaders.middleware.CorsMiddleware', 
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -144,6 +150,18 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000'
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ]
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=1),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True
+}
 
 
 

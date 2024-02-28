@@ -17,17 +17,19 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
+from rest_framework_simplejwt import views as jwt_views
 from main_app import views
 
-
 router = routers.DefaultRouter()
-# router.register(r'users', views.UserViewSet)
 router.register(r'players', views.PlayerViewSet)
-
-
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('token/', jwt_views.TokenObtainPairView.as_view(), name="token_obtain_pair"),
+    path('token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
+    path('auth_logout/', views.LogoutView.as_view(), name='auth_logout'),
+    path('signup/', views.SignupView.as_view(), name='auth_register'),
     path('', include(router.urls)),
     path('home/', views.home_view, name='home'),
 ]
+

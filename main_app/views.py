@@ -5,12 +5,9 @@ from rest_framework.response import Response
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-
-
-# class UserViewSet(viewsets.ReadOnlyModelViewSet):
-#     queryset = User.objects.all().order_by('-date_joined')
-#     serializer_class = UserSerializer
-#     permission_classes = [permissions.IsAuthenticated]
+from rest_framework.views import APIView
+from django.contrib.auth.models import User
+from rest_framework_simplejwt.tokens import RefreshToken
 
 class PlayerViewSet(viewsets.ModelViewSet):
     queryset = Player.objects.all()
@@ -45,4 +42,29 @@ class PlayerViewSet(viewsets.ModelViewSet):
     
 def home_view(request):
     return HttpResponse("This is the home page.")
+
+class LogoutView(APIView):
+    def post(self, request):
+        try:
+            refresh_token = request.data["refresh_token"]
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+
+            return Response(status=status.HTTP_205_RESET_CONTENT)
+        except Exception as e:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+class SignupView(APIView):
+    def post(self, request):
+        username = request.data.get('username')
+        email = request.data.get('email')
+        password = request.data.get('password')
+        
+        try:
+            new_user = User.objects.create(username=username, email=email)
+            new_user.set_password(password)
+            new_user.save()
+            return Response(status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 

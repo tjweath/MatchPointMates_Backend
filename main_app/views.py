@@ -9,23 +9,23 @@ from rest_framework.views import APIView
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
 
+
 class PlayerViewSet(viewsets.ModelViewSet):
-    queryset = Player.objects.all()
+    # queryset = Player.objects.all()
+    # permission_classes = [permissions.IsAuthenticated] 
     serializer_class = PlayerSerializer
-    http_method_names = ['get', 'post', 'patch', 'put', 'delete']
+    # http_method_names = ['get', 'post', 'patch', 'put', 'delete']
     
-    def list(self, request):
-        queryset = Player.objects.all()
-        serializer = PlayerSerializer(queryset, many=True)
-        return Response(serializer.data)
+    def get_queryset(self):
+        user = self.request.user
+        return Player.objects.filter(owner=user)
     
-    def post(self, request):
-        print(request.body)
-        serializer = PlayerSerializer(data={'player_name': request.body.get('player_name'),'player_country':request.body.get('player_country')})
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data, status=201)
-        return JsonResponse(serializer.errors, status=500)
+    # def post(self, request):
+    #     serializer = PlayerSerializer(data=request.data)  # Simplified
+    #     if serializer.is_valid():
+    #         serializer.save(owner=request.user)  # Ensure the owner is set
+    #         return JsonResponse(serializer.data, status=201)
+    #     return JsonResponse(serializer.errors, status=400)  # Use 400 for Bad Request
     
     def put(self, request, pk=None):
         try:

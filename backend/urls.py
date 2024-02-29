@@ -31,5 +31,6 @@ urlpatterns = [
     path('signup/', views.SignupView.as_view(), name='auth_register'),
     path('', include(router.urls)),
     path('home/', views.home_view, name='home'),
+    path('api/get_player_data/', views.get_player_data, name='get_player_data'),
 ]
 

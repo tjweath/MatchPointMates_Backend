@@ -32,7 +32,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'localhost',
-    '127.0.0.1'
+    '127.0.0.1',
+    'matchpointmatesbackend-production.up.railway.app',
+    'matchpointmates_backend.railway.internal'
 ]
 
 

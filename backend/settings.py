@@ -50,12 +50,14 @@ INSTALLED_APPS = [
     'main_app',
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',
-    'corsheaders'
+    'corsheaders',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost/',
-    'http://127.0.0.1/'
+    'http://127.0.0.1/',
+    'https://matchpointmatesfrontend-production.up.railway.app/home',
+    'https://*.railway.app/'
 ]
 
 MIDDLEWARE = [

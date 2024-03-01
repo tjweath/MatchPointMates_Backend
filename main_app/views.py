@@ -10,11 +10,13 @@ from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
 import requests
 
-def get_player_data(request):
-    url = "https://api.api-tennis.com/tennis/?method=get_players&player_key=1905&APIkey=6f3fa3b75d781c46f050803d93c20ec018645f37d7fc90b62724f152273ada7b"
+
+def get_player_data(request, player_id):
+    url = f"https://api.api-tennis.com/tennis/?method=get_players&player_key={player_id}&APIkey=6f3fa3b75d781c46f050803d93c20ec018645f37d7fc90b62724f152273ada7b"
     response = requests.get(url)
     data = response.json()
     return JsonResponse(data)
+
 
 
 class PlayerViewSet(viewsets.ModelViewSet):
